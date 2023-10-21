@@ -31,6 +31,7 @@ Partial Class addstaffdetailsform
         addstaffbtn = New Button()
         sname = New Label()
         staffnametext = New TextBox()
+        closeaddstaffdetail = New Button()
         SuspendLayout()
         ' 
         ' deletestaffdet
@@ -87,7 +88,7 @@ Partial Class addstaffdetailsform
         ' 
         ' addstaffbtn
         ' 
-        addstaffbtn.Location = New Point(457, 39)
+        addstaffbtn.Location = New Point(500, 36)
         addstaffbtn.Name = "addstaffbtn"
         addstaffbtn.Size = New Size(94, 64)
         addstaffbtn.TabIndex = 12
@@ -110,11 +111,21 @@ Partial Class addstaffdetailsform
         staffnametext.Size = New Size(273, 27)
         staffnametext.TabIndex = 10
         ' 
+        ' closeaddstaffdetail
+        ' 
+        closeaddstaffdetail.Location = New Point(538, 409)
+        closeaddstaffdetail.Name = "closeaddstaffdetail"
+        closeaddstaffdetail.Size = New Size(94, 29)
+        closeaddstaffdetail.TabIndex = 20
+        closeaddstaffdetail.Text = "Close"
+        closeaddstaffdetail.UseVisualStyleBackColor = True
+        ' 
         ' addstaffdetailsform
         ' 
         AutoScaleDimensions = New SizeF(8.0F, 20.0F)
         AutoScaleMode = AutoScaleMode.Font
-        ClientSize = New Size(658, 450)
+        ClientSize = New Size(653, 450)
+        Controls.Add(closeaddstaffdetail)
         Controls.Add(deletestaffdet)
         Controls.Add(editstaffdet)
         Controls.Add(slist)
@@ -124,6 +135,7 @@ Partial Class addstaffdetailsform
         Controls.Add(addstaffbtn)
         Controls.Add(sname)
         Controls.Add(staffnametext)
+        MaximizeBox = False
         Name = "addstaffdetailsform"
         Text = "addstaffdetailsform"
         ResumeLayout(False)
@@ -139,4 +151,5 @@ Partial Class addstaffdetailsform
     Friend WithEvents addstaffbtn As Button
     Friend WithEvents sname As Label
     Friend WithEvents staffnametext As TextBox
+    Friend WithEvents closeaddstaffdetail As Button
 End Class

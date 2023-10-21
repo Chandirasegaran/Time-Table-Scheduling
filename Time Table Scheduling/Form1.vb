@@ -7,4 +7,9 @@
         Me.Hide()
         addstaffdetailsform.Show()
     End Sub
+
+    Private Sub addclasses_Click(sender As Object, e As EventArgs) Handles addclasses.Click
+        Me.Hide()
+        addclassesform.Show()
+    End Sub
 End Class

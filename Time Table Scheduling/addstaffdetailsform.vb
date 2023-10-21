@@ -3,7 +3,6 @@
 Public Class addstaffdetailsform
     Private connectionString As String = "server=localhost;user=root;password=2503;database=timetableall"
     Private connection As MySqlConnection
-    Private command As MySqlCommand
 
     Public Sub New()
         InitializeComponent()
@@ -12,15 +11,16 @@ Public Class addstaffdetailsform
 
     Private Sub InitializeDatabase()
         connection = New MySqlConnection(connectionString)
-        command = New MySqlCommand()
-        command.Connection = connection
 
         Try
             connection.Open()
 
             ' Create the staffdetailstable if it doesn't exist
-            command.CommandText = "CREATE TABLE IF NOT EXISTS staffdetailstable (StaffCode VARCHAR(255), StaffName VARCHAR(255))"
-            command.ExecuteNonQuery()
+            Using command As New MySqlCommand()
+                command.Connection = connection
+                command.CommandText = "CREATE TABLE IF NOT EXISTS staffdetailstable (StaffCode VARCHAR(255), StaffName VARCHAR(255))"
+                command.ExecuteNonQuery()
+            End Using
         Catch ex As Exception
             MessageBox.Show("Error connecting to the database: " & ex.Message)
         Finally
@@ -40,13 +40,16 @@ Public Class addstaffdetailsform
                 connection.Open()
             End If
 
-            command.CommandText = "SELECT * FROM staffdetailstable"
-            Using reader As MySqlDataReader = command.ExecuteReader()
-                While reader.Read()
-                    Dim staffCode As String = reader("StaffCode").ToString()
-                    Dim staffName As String = reader("StaffName").ToString()
-                    stafflstbox.Items.Add($"{staffCode} - {staffName}")
-                End While
+            Using command As New MySqlCommand()
+                command.Connection = connection
+                command.CommandText = "SELECT * FROM staffdetailstable"
+                Using reader As MySqlDataReader = command.ExecuteReader()
+                    While reader.Read()
+                        Dim staffCode As String = reader("StaffCode").ToString()
+                        Dim staffName As String = reader("StaffName").ToString()
+                        stafflstbox.Items.Add($"{staffCode} - {staffName}")
+                    End While
+                End Using
             End Using
         Catch ex As Exception
             MessageBox.Show("Error loading data from the database: " & ex.Message)
@@ -67,11 +70,14 @@ Public Class addstaffdetailsform
                 connection.Open()
             End If
 
-            ' Insert data into the database
-            command.CommandText = "INSERT INTO staffdetailstable (StaffCode, StaffName) VALUES (@staffCode, @staffName)"
-            command.Parameters.AddWithValue("@staffCode", staffCode)
-            command.Parameters.AddWithValue("@staffName", staffName)
-            command.ExecuteNonQuery()
+            Using command As New MySqlCommand()
+                command.Connection = connection
+                ' Insert data into the database
+                command.CommandText = "INSERT INTO staffdetailstable (StaffCode, StaffName) VALUES (@staffCode, @staffName)"
+                command.Parameters.AddWithValue("@staffCode", staffCode)
+                command.Parameters.AddWithValue("@staffName", staffName)
+                command.ExecuteNonQuery()
+            End Using
 
             ' Clear and reload the list box
             staffcodetext.Clear()
@@ -108,16 +114,15 @@ Public Class addstaffdetailsform
             Try
                 connection.Open()
 
-                ' Create a new MySqlCommand to avoid parameter conflicts
-                Dim editCommand As MySqlCommand = New MySqlCommand()
-                editCommand.Connection = connection
-
-                ' Update the database with the new values
-                editCommand.CommandText = "UPDATE staffdetailstable SET StaffCode = @newStaffCode, StaffName = @newStaffName WHERE StaffCode = @staffCode"
-                editCommand.Parameters.AddWithValue("@newStaffCode", newStaffCode)
-                editCommand.Parameters.AddWithValue("@newStaffName", newStaffName)
-                editCommand.Parameters.AddWithValue("@staffCode", staffCode)
-                editCommand.ExecuteNonQuery()
+                Using editCommand As New MySqlCommand()
+                    editCommand.Connection = connection
+                    ' Update the database with the new values
+                    editCommand.CommandText = "UPDATE staffdetailstable SET StaffCode = @newStaffCode, StaffName = @newStaffName WHERE StaffCode = @staffCode"
+                    editCommand.Parameters.AddWithValue("@newStaffCode", newStaffCode)
+                    editCommand.Parameters.AddWithValue("@newStaffName", newStaffName)
+                    editCommand.Parameters.AddWithValue("@staffCode", staffCode)
+                    editCommand.ExecuteNonQuery()
+                End Using
             Catch ex As Exception
                 MessageBox.Show("Error updating data in the database: " & ex.Message)
             Finally
@@ -143,14 +148,13 @@ Public Class addstaffdetailsform
                 Try
                     connection.Open()
 
-                    ' Create a new MySqlCommand to avoid parameter conflicts
-                    Dim deleteCommand As MySqlCommand = New MySqlCommand()
-                    deleteCommand.Connection = connection
-
-                    ' Delete the selected record from the database
-                    deleteCommand.CommandText = "DELETE FROM staffdetailstable WHERE StaffCode = @staffCode"
-                    deleteCommand.Parameters.AddWithValue("@staffCode", staffCode)
-                    deleteCommand.ExecuteNonQuery()
+                    Using deleteCommand As New MySqlCommand()
+                        deleteCommand.Connection = connection
+                        ' Delete the selected record from the database
+                        deleteCommand.CommandText = "DELETE FROM staffdetailstable WHERE StaffCode = @staffCode"
+                        deleteCommand.Parameters.AddWithValue("@staffCode", staffCode)
+                        deleteCommand.ExecuteNonQuery()
+                    End Using
                 Catch ex As Exception
                     MessageBox.Show("Error deleting data from the database: " & ex.Message)
                 Finally
@@ -163,5 +167,12 @@ Public Class addstaffdetailsform
         End If
     End Sub
 
+    Private Sub closeaddstaffdetail_Click(sender As Object, e As EventArgs) Handles closeaddstaffdetail.Click
+        Me.Close()
+    End Sub
 
+    Private Sub addstaffdetailsform_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        ' Load data when the form loads
+        LoadData()
+    End Sub
 End Class
