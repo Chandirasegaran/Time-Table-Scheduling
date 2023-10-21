@@ -1,5 +1,5 @@
 ﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
-Partial Class Form1
+Partial Class homeform
     Inherits System.Windows.Forms.Form
 
     'Form overrides dispose to clean up the component list.
@@ -22,10 +22,41 @@ Partial Class Form1
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
-        components = New System.ComponentModel.Container()
-        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(800, 450)
-        Me.Text = "Form1"
+        addstaff = New Button()
+        addclasses = New Button()
+        SuspendLayout()
+        ' 
+        ' addstaff
+        ' 
+        addstaff.Location = New Point(133, 100)
+        addstaff.Name = "addstaff"
+        addstaff.Size = New Size(94, 29)
+        addstaff.TabIndex = 0
+        addstaff.Text = "Add Staff"
+        addstaff.UseVisualStyleBackColor = True
+        ' 
+        ' addclasses
+        ' 
+        addclasses.Location = New Point(133, 232)
+        addclasses.Name = "addclasses"
+        addclasses.Size = New Size(94, 29)
+        addclasses.TabIndex = 1
+        addclasses.Text = "Add Class"
+        addclasses.UseVisualStyleBackColor = True
+        ' 
+        ' homeform
+        ' 
+        AutoScaleDimensions = New SizeF(8F, 20F)
+        AutoScaleMode = AutoScaleMode.Font
+        ClientSize = New Size(364, 393)
+        Controls.Add(addclasses)
+        Controls.Add(addstaff)
+        MaximizeBox = False
+        Name = "homeform"
+        Text = "homeForm"
+        ResumeLayout(False)
     End Sub
 
+    Friend WithEvents addstaff As Button
+    Friend WithEvents addclasses As Button
 End Class
